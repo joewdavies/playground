@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css">
+  </head>
+  <body>
+    <main>
+        <div id="map"></div>
+    </main>
+    
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <script>
+
+      let myData = [
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Aracena, con competencia en materia de violencia sobre la mujer",
+        coords: [37.893279452902014, -6.563087000785392]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Arcos de la Frontera, con competencia en materia de violencia sobre la mujer",
+        coords: [36.755866316805616, -5.810268907648663]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 6 de Ayamonte",
+        coords: [37.21415640092084, -7.404634764720895]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Barbate, con funciones compartidas de registro civil",
+        coords: [36.19006569111006, -5.922053588597759]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Berja, con competencia enmateria de violencia sobre la mujer",
+        coords: [36.84485369706036, -2.9452895614260513]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Chiclana de la Frontera, concompetencia en materia de violencia sobre la mujer",
+        coords: [36.41568956708374, -6.146372185286633]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 6 de Chiclana de la Frontera",
+        coords: [36.41568956708374, -6.146372185286633]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Coria del Río, con funcionescompartidas de registro civil",
+        coords: [37.28815953372765, -6.053796587621752]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Coria del Rio, con competenciaen materia de violencia sobre la mujer",
+        coords: [37.28815953372765, -6.053796587621752]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Écija, con competencia enmateria de violencia sobre la mujer",
+        coords: [37.54112543891506, -5.082462761368052]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Écija, con funcionescompartidas de registro civil",
+        coords: [37.54112543891506, -5.082462761368052]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Huércal-Overa, concompetencia en materia de violencia sobre la mujer",
+        coords: [37.396131282819944, -1.943876808692058]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Huércal-Overa, con funcionescompartidas de registro civil",
+        coords: [37.396131282819944, -1.943876808692058]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Huércal-Overa",
+        coords: [37.396131282819944, -1.943876808692058]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Huéscar, con competencia enmateria de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [37.803387231093225, -2.5306560749363887]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Lucena, con funcionescompartidas de registro civil",
+        coords: [37.412530568442, -4.493619238900143]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Lora del Río, con funcionescompartidas de registro civil",
+        coords: [37.655435051682865, -5.5260596070600485]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Marchena, con funciones compartidas de registro civil",
+        coords: [37.3270361738023, -5.416176339586823]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Martos, con competencia en materia de violencia sobre la mujer",
+        coords: [37.718262135768654, -3.968992546375262]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Martos, con funciones compartidas de registro civil",
+        coords: [37.718262135768654, -3.968992546375262]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Puerto Real, con competencia en materia de violencia sobre la mujer",
+        coords: [36.53112678156062, -6.183218878000991]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de San Roque",
+        coords: [36.210457202510575, -5.384894198612685]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Ubrique, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [36.677253224580774, -5.445123781213892]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Úbeda",
+        coords: [38.01118974046687, -3.371814213110574]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Utrera, con competencia en materia de violencia sobre la mujer",
+        coords: [37.18513744011641, -5.78034943607205]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Utrera, con funciones compartidas de registro civil",
+        coords: [37.18513744011641, -5.78034943607205]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Alcañiz, con funciones compartidas de registro civil",
+        coords: [41.054313066497976, -0.1301193191868207]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Tarazona, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [41.90444603147892, -1.7253918430458828]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Castropol, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [43.52503402739142, -7.028047362704618]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Lena, con funciones compartidas de registro civil",
+        coords: [43.0873122384277, -5.835476443824208]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Ciutadella de Menorca, con funciones compartidas de registro civil",
+        coords: [39.99917446141802, 3.840903613923919]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 2 de Eivissa",
+        coords: [38.90638177841414, 1.4196907435241557]
+      },
+      {
+        name: "Juzgado de Instrucción número 1 de Inca",
+        coords: [39.71775575906902, 2.9083934754508314]
+      },
+      {
+        name: "Juzgado de Instrucción número 2 de Inca, con competencia en materia de violencia sobre la mujer",
+        coords: [39.71775575906902, 2.9083934754508314]
+      },
+      {
+        name: "Juzgado de Instrucción número 1 de Manacor",
+        coords: [39.56974583062239, 3.20998679475817]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 17 de Palma, mientras su titular doña Tomasa Hernández Martín se encuentre en la situación administrativa de servicios especiales en la Carrera Judicial",
+        coords: [39.567102286951574, 2.659459780117413]
+      },
+      {
+        name: "Juzgado de lo Mercantil número 1 de Palma",
+        coords: [39.567102286951574, 2.659459780117413]
+      },
+      {
+        name: "Juzgado de lo Mercantil número 4 de Palma",
+        coords: [39.567102286951574, 2.659459780117413]
+      },
+    
+      {
+        name: "Juzgado de Instrucción número 2 de Arona",
+        coords: [28.099685348128723, -16.679887253049525]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 3 de Arrecife, con funciones compartidas de registro civil",
+        coords: [28.964317744524706, -13.55314650892786]
+      },
+      {
+        name: "Juzgado de Instrucción número 1 de Arrecife, con competencia en materia de violencia sobre la mujer",
+        coords: [28.964317744524706, -13.55314650892786]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Granadilla de Abona",
+        coords: [28.170879675706537, -16.54210540852984]
+      },
+      {
+        name: "Juez/a de adscripción territorial del Tribunal Superior de Justicia de Canarias, provincia de Santa Cruz de Tenerife",
+        coords: [28.4637799554525, -16.24821277137661]
+      },
+      {
+        name: "Jueza de adscripción territorial del Tribunal Superior de Justicia de Canarias, provincia de Santa Cruz de Tenerife",
+        coords: [28.4637799554525, -16.24821277137661]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Castro-Urdiales, con funciones compartidas de registro civil",
+        coords: [43.36606457197385, -3.2236287898442773]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Castro-Urdiales, con competencia en materia de violencia sobre la mujer",
+        coords: [43.36606457197385, -3.2236287898442773]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Santoña, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [43.44489960779738, -3.4556432223524243]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Aranda de Duero, con competencia en materia de violencia sobre la mujer",
+        coords: [41.66910103065499, -3.6892550065462704]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Arenas de San Pedro, con funciones compartidas de registro civil",
+        coords: [40.21019005588732, -5.087493225248408]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Miranda de Ebro, con funciones compartidas de registro civil",
+        coords: [42.68710359073476, -2.943386734440822]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Medina del Campo, con competencia en materia de violencia sobre la mujer",
+        coords: [41.30835062891667, -4.9152877640254475]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Segovia, con competencia en materia de violencia sobre la mujer",
+        coords: [40.94227171986563, -4.108939503105534]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Cuenca, con funciones compartidas de registro civil",
+        coords: [40.06996729446517, -2.1363449906123755]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de La Roda, con competencia en materia de violencia sobre la mujer",
+        coords: [39.20639385432869, -2.1537634937856596]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Ocaña, con competencia en materia de violencia sobre la mujer",
+        coords: [39.958115245012436, -3.50008147671511]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Ocaña, con funciones compartidas de registro civil",
+        coords: [39.958115245012436, -3.50008147671511]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Puertollano, con competencia en materia de violencia sobre la mujer",
+        coords: [38.688938474244985, -4.105727101003735]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Puertollano, con funciones compartidas de registro civil",
+        coords: [38.688938474244985, -4.105727101003735]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Talavera de la Reina",
+        coords: [39.96260854626804, -4.828124492362252]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Talavera de la Reina, con funciones compartidas de registro civil",
+        coords: [39.96260854626804, -4.828124492362252]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Tomelloso",
+        coords: [39.157006225862105, -3.0194105419890507]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Torrijos, con funciones compartidas de registro civil",
+        coords: [39.983178562394826, -4.2818115235227285]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Villarrobledo, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [39.26861377941576, -2.602027203738526]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Villarrobledo",
+        coords: [39.26861377941576, -2.602027203738526]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Amposta, con competencia en materia de violencia sobre la mujer",
+        coords: [40.70681230326108, 0.5806820618612605]
+      },
+      {
+        name: "Juzgado de lo Penal número 1 de Arenys de Mar",
+        coords: [41.580251124379394, 2.553222517835868]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Blanes",
+        coords: [41.67553731285113, 2.790432185904015]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Blanes",
+        coords: [41.67553731285113, 2.790432185904015]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Cornellà de Llobregat",
+        coords: [41.357863945537474, 2.0733842984026367]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Cornellá de Llobregat",
+        coords: [41.357863945537474, 2.0733842984026367]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Cornellá de Llobregat",
+        coords: [41.357863945537474, 2.0733842984026367]
+      },
+      {
+        name: "Juzgado de Primera Instancia de Instrucción número 4 de Cornellá de Llobregat, con competencia en materia de violencia sobre la mujer",
+        coords: [41.357863945537474, 2.0733842984026367]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 5 de Cornellá de Llobregat",
+        coords: [41.357863945537474, 2.0733842984026367]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de El Prat de Llobregat",
+        coords: [41.323969114096094, 2.097327678797347]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de El Prat de Llobregat",
+        coords: [41.323969114096094, 2.097327678797347]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 6 de El Vendrell",
+        coords: [41.219713553364606, 1.5349209235161652]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Esplugues de Llobregat",
+        coords: [41.37677545567743, 2.085510482413712]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Figueres",
+        coords: [42.26498440004924, 2.958549197096207]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Figueres",
+        coords: [42.26498440004924, 2.958549197096207]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 8 de Gavá",
+        coords: [41.3025788569883, 2.005456827930615]
+      },
+      {
+        name: "Juzgado de lo Mercantil número 1 de Girona",
+        coords: [41.9783839734846, 2.8217559006301185]
+      },
+      {
+        name: "Juzgado de lo Penal número 3 de Girona",
+        coords: [41.9783839734846, 2.8217559006301185]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 7 de Granollers",
+        coords: [41.606567296643014, 2.288194298937398]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de La Bisbal d’Empordá, con competencia en materia de violencia sobre la mujer",
+        coords: [41.95874342321111, 3.0395993121782943]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Manresa",
+        coords: [41.7284317449979, 1.8213462212923421]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 5 de Martorell, con competencia en materia de violencia sobre la mujer",
+        coords: [41.477318827052294, 1.9186047679856286]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 7 de Martorell",
+        coords: [41.477318827052294, 1.9186047679856286]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Mollet del Vallés",
+        coords: [41.54274375042846, 2.2100789627226187]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Mollet del Vallés",
+        coords: [41.54274375042846, 2.2100789627226187]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Mollet del Vallés, con competencia en materia de violencia sobre la mujer",
+        coords: [41.54274375042846, 2.2100789627226187]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 5 de Mollet del Vallés",
+        coords: [41.54274375042846, 2.2100789627226187]
+      },
+      {
+        name: "Juzgado de lo Penal número 1 de Reus",
+        coords: [41.14954465317128, 1.1064808407744344]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 6 de Reus",
+        coords: [41.14954465317128, 1.1064808407744344]
+      },
+      {
+        name: "Juzgado de Primera Instancia número 9 de Sabadell, de familia, capacidad de las personas e internamientos",
+        coords: [41.155216310420734, 1.109746294836836]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 5 de Sant Boi de Llobregat",
+        coords: [41.34357270564254, 2.0381490456717786]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Sant Feliu de Llobregat",
+        coords: [41.38580037823004, 2.0506295248931954]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Sant Feliu de Llobregat, con funciones compartidas de registro civil",
+        coords: [41.38580037823004, 2.0506295248931954]
+      },
+      {
+        name: "Juzgado de lo Penal número 2 de Tarragona",
+        coords: [41.118758426249954, 1.2454410252544679]
+      },
+      {
+        name: "Juzgado de lo Penal número 4 de Tarragona",
+        coords: [41.118758426249954, 1.2454410252544679]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Tortosa, con competencia en materia de violencia sobre la mujer",
+        coords: [40.81239263765183, 0.5224786687720764]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Valls, con competencia en materia de violencia sobre la mujer",
+        coords: [41.285358674681554, 1.249417779614937]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Vielha e Mijarán, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [42.7039751194872, 0.7899959814517463]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 6 de Vilanova y la Geltrú, con competencia en materia de violencia sobre la mujer",
+        coords: [41.214708010290686, 1.7308902645437358]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Vic",
+        coords: [41.9299750750032, 2.2550545619301388]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Vic, con funciones compartidas de registro civil",
+        coords: [41.9299750750032, 2.2550545619301388]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 5 de Vic",
+        coords: [41.9299750750032, 2.2550545619301388]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 6 de Vic",
+        coords: [41.9299750750032, 2.2550545619301388]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Vilafranca del Penedés, con competencia en materia de violencia sobre la mujer",
+        coords: [41.34285163656188, 1.6997731801453446]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Alcoy, con funciones compartidas de registro civil",
+        coords: [38.69855831316559, -0.47875900863946985]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Alzira",
+        coords: [39.151514984370145, -0.43307450130450414]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Elda, con competencia en materia de violencia sobre la mujer",
+        coords: [38.476390472066555, -0.7973947761955424]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Novelda",
+        coords: [38.38381127858005, -0.766773428604855]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Requena, con competencia en materia de violencia sobre la mujer",
+        coords: [39.49108818230778, -1.0868821379202023]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de San Vicente del Raspeig",
+        coords: [38.39554415779393, -0.5259487072137363]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Villajoyosa",
+        coords: [38.507442656170745, -0.2283880371932957]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Villajoyosa",
+        coords: [38.507442656170745, -0.2283880371932957]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Villena, con competencia en materia de violencia sobre la mujer",
+        coords: [38.631888024492085, -0.862435455653465]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Vinaròs, con competencia en materia de violencia sobre la mujer",
+        coords: [40.4675683829941, 0.47157259896886267]
+      },
+      {
+        name: "Juez/a de adscripción territorial del Tribunal Superior de Justicia de la Comunidad Valenciana, provincia de Alicante",
+        coords: [39.472306332954574, -0.3696514794800818]
+      },
+    
+      {
+        name: "Juzgado de Violencia sobre la Mujer número 1 de Badajoz",
+        coords: [38.87904239237664, -6.971198227882043]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Don Benito",
+        coords: [38.954029754574435, -5.85917100749658]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Olivenza, con competencia en materia de violencia sobre la mujer",
+        coords: [38.68257214203571, -7.101636183159357]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Valencia de Alcántara, con funciones compartidas de registro civil",
+        coords: [39.41288330268256, -7.241873593511243]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia Instrucción número 2 de A Estrada",
+        coords: [42.68793916894996, -8.493097952869615]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Carballo, con competencia en materia de violencia sobre la mujer",
+        coords: [43.21487737186277, -8.694815436222163]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Carballo",
+        coords: [43.21487737186277, -8.694815436222163]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Cangas de Morrazo, con competencia en materia de violencia sobre la mujer",
+        coords: [42.264447342796956, -8.78067925476945]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Corcubión, con competencia en materia de violencia sobre la mujer",
+        coords: [42.94240737510296, -9.192520838990127]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Corcubión, con funciones compartidas de registro civil",
+        coords: [42.94240737510296, -9.192520838990127]
+      },
+      {
+        name: "Juzgado de Primera instancia e Instrucción número 2 de Lalín, con funciones compartidas de registro civil",
+        coords: [42.65870383927705, -8.1120356988141]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Muros, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [42.77499364112799, -9.05859764187211]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Muros, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [42.77499364112799, -9.05859764187211]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Ponteareas",
+        coords: [42.17544312246724, -8.50525603006323]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Sarria, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [42.781646943006564, -7.410220485461575]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Verín, con competencia en materia de violencia sobre la mujer",
+        coords: [41.94036602764942, -7.437852935444881]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Verín, con funciones compartidas de registro civil",
+        coords: [41.94036602764942, -7.437852935444881]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Viveiro, con funciones compartidas de registro civil",
+        coords: [43.66430009561031, -7.593722650134181]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Xinzo de Limia, con competencia en materia de violencia sobre la mujer y funciones compartidas de registro civil",
+        coords: [42.063061248089994, -7.725941529557883]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Calahorra, con competencia en materia de violencia sobre la mujer",
+        coords: [42.306945205302796, -1.9649479204881157]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Valdemoro, con competencia en materia de violencia sobre la mujer",
+        coords: [40.19088498310573, -3.668161056346371]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Cieza, con competencia en materia de violencia sobre la mujer",
+        coords: [38.2422941162904, -1.421750377756776]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Molina de Segura, con competencia en materia de violencia sobre la mujer",
+        coords: [38.052651667586794, -1.2073634873916663]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Totana",
+        coords: [37.770396504096695, -1.4980733275057085]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Totana, con competencia en materia de violencia sobre la mujer",
+        coords: [37.770396504096695, -1.4980733275057085]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Totana",
+        coords: [37.770396504096695, -1.4980733275057085]
+      },
+    
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Amurrio",
+        coords: [43.05178628839735, -3.0009164814098104]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 2 de Eibar, con competencia en materia de violencia sobre la mujer",
+        coords: [43.183321077638716, -2.4716619717419297]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Getxo",
+        coords: [43.33839311617016, -3.007955757611549]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 4 de Getxo",
+        coords: [43.33839311617016, -3.007955757611549]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Gernika-Lumo, con competencia en materia de violencia sobre la mujer",
+        coords: [43.31133146624726, -2.680100969703887]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 1 de Tolosa, con competencia en materia de violencia sobre la mujer",
+        coords: [43.134755343205036, -2.0748985713237813]
+      },
+      {
+        name: "Juzgado de Primera Instancia e Instrucción número 3 de Tolosa",
+        coords: [43.134755343205036, -2.0748985713237813]
+      }
+    ]
+      
+      const getColor = function (obj) {
+          if (obj.name.includes("violencia")) return "red";
+          if (obj.name.includes("Penal")) return "#58CF39";
+          return "#277FCA";
+        }
+      
+      const map = new maplibregl.Map({
+        container,
+        center: [-3, 35],
+        zoom: 4,
+        style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+        scrollZoom: true
+      });
+      map.addControl(new maplibregl.FullscreenControl());
+    
+      myData.forEach((obj) => {
+        let marker = new maplibregl.Marker({
+          color: getColor(obj)
+        })
+          .setLngLat([obj.coords[1], obj.coords[0]])
+          .setPopup(
+            new maplibregl.Popup({ closeButton: true }).setHTML(
+              `<span>${obj.name}</span>`
+            )
+          )
+          .addTo(map);
+      });
+    </script>
+  </body>
+</html>
