@@ -16,7 +16,13 @@
     
     <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
     <script>
-
+      const getColor = function (obj) {
+          if (obj.name.includes("violencia")) return "red";
+          if (obj.name.includes("Penal")) return "#58CF39";
+          if (obj.name.includes("Mercantil")) return "#984ea3"
+          return "#277FCA";
+        }
+      
         let myData = [
         {
           name: "Juzgado de Primera Instancia e Instrucción número 1 de Aracena, con competencia en materia de violencia sobre la mujer",
@@ -646,11 +652,6 @@
         }
       ]
       
-      const getColor = function (obj) {
-          if (obj.name.includes("violencia")) return "red";
-          if (obj.name.includes("Penal")) return "#58CF39";
-          return "#277FCA";
-        }
 
       let container = document.getElementById('map')
       const map = new maplibregl.Map({
