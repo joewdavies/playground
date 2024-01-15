@@ -58,6 +58,19 @@
       align-self: center;
       padding-left: 10px;
     }
+    #legend-close{
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      cursor:pointer;
+      font-size:16px;
+    }
+    #legend-close:hover{
+      font-weight: bold;
+    }
   </style>
   <body style="margin: 0px">
     <main>
@@ -65,6 +78,9 @@
         <span class="fg-map-legend fg-2x"></span>
       </div>
       <div id="legend">
+        <div id="legend-close">
+          x
+        </div>
         <div class="legend-item">
           <div class="legend-item-shape">
             <svg display="block" height="41px" width="30px" viewBox="0 0 27 41">
@@ -1224,9 +1240,21 @@
 
       //ontoggle legend
       let btn = document.getElementById('legend-button')
+      let legendCloseBtn = document.getElementById('legend-close')
       let legend = document.getElementById('legend')
       let legendIsOpen = true
       btn.addEventListener('click',function(e){
+        legendIsOpen = !legendIsOpen
+
+        if (!legendIsOpen) {
+          // close
+          legend.style.display = 'none'
+        } else {
+          // open
+          legend.style.display = 'block'
+        }
+      })
+      legendCloseBtn.addEventListener('click',function(e){
         legendIsOpen = !legendIsOpen
 
         if (!legendIsOpen) {
