@@ -91,7 +91,7 @@
       overflow: hidden;
       background: white;
       height: 245px;
-      width: 200px;
+      width: 250px;
     }
     #list {
       display: none;
@@ -107,8 +107,8 @@
       right: 10px;
       overflow: hidden;
       background: white;
-      height: 200px;
-      width: 200px;
+      height: 250px;
+      width: 250px;
       overflow-y: auto;
     }
     .legend-item {
@@ -773,9 +773,7 @@
         <span style="font-weight: bold" id="mi-lista-title">Mi lista</span>
         <div id="my-list"></div>
         <div>
-          <button class="popup-button" id="borrar-lista">
-            Borrar lista
-          </button>
+          <button class="popup-button" id="borrar-lista">Borrar lista</button>
         </div>
       </div>
     </main>
@@ -1456,7 +1454,6 @@
 
       myData.forEach((obj, i) => {
         obj.id = i; //assign it an ID
-
         let marker = new maplibregl.Marker({
           color: getColor(obj),
         }).setLngLat([obj.coords[1], obj.coords[0]]);
@@ -1483,6 +1480,8 @@
       const onClickAddToList = (markerId) => {
         if (!userList.includes(markerId)) {
           userList.push(markerId);
+          localStorage.setItem("userList", JSON.stringify(userList));
+
           let marker = document.getElementById("marker-" + markerId);
           marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
             "yellow";
@@ -1502,6 +1501,8 @@
         if (userList.includes(markerId)) {
           let index = userList.indexOf(markerId);
           delete userList[index];
+          localStorage.setItem("userList", JSON.stringify(userList));
+
           let marker = document.getElementById("marker-" + markerId);
           marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
             getColor(myData[markerId]);
@@ -1539,6 +1540,20 @@
         });
         container.appendChild(newList);
       };
+
+      //load list from memory and update markers/DOM
+      let localList = JSON.parse(localStorage.getItem("userList"));
+      if (localList) {
+        userList = localList;
+        updateListDOM();
+        //update markers
+        userList.forEach((markerId) => {
+          let marker = document.getElementById("marker-" + markerId);
+          //set as selected
+          marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
+            "yellow";
+        });
+      }
 
       //ontoggle legend
       let btn = document.getElementById("legend-button");
@@ -1613,6 +1628,7 @@
 
             // Clear it!
             userList = [];
+            localStorage.setItem("userList", JSON.stringify(userList));
             updateListDOM();
           } else {
             // Do nothing!
@@ -1627,11 +1643,11 @@
         );
         let addToListButton = document.querySelector(".addToListButton");
         if (isInList) {
-          removeFromListButton.style.display = "block";
-          addToListButton.style.display = "none";
+          if (removeFromListButton) removeFromListButton.style.display = "block";
+          if (addToListButton) addToListButton.style.display = "none";
         } else {
-          removeFromListButton.style.display = "none";
-          addToListButton.style.display = "block";
+          if (removeFromListButton) removeFromListButton.style.display = "none";
+          if (addToListButton) addToListButton.style.display = "block";
         }
       };
     </script>
