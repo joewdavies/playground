@@ -20,9 +20,18 @@
     />
   </head>
   <style>
+    .button {
+      height: 30px;
+      width: 30px;
+      display: flex;
+      align-items: center;
+      margin: auto;
+      justify-content: center;
+      bottom: 20px;
+    }
     #legend-button {
       position: absolute;
-      bottom: 60px;
+
       left: 10px;
       padding: 5px;
       background: white;
@@ -36,6 +45,7 @@
       background-color: lightgrey;
     }
     #legend {
+      display:none;
       z-index: 1;
       padding: 5px;
       border: 1px solid #767676;
@@ -44,12 +54,30 @@
       font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
       font-size: 13px;
       position: absolute;
-      bottom: 98px;
+      bottom: 65px;
       left: 10px;
+      overflow: hidden;
+      background: white;
+      height: 245px;
+      width: 200px;
+    }
+    #list {
+      display:none;
+      z-index: 1;
+      padding: 5px;
+      border: 1px solid #767676;
+      border-radius: 5px;
+      -webkit-tap-highlight-color: rgb(210 84 84 / 0%);
+      font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      position: absolute;
+      bottom: 65px;
+      right: 10px;
       overflow: hidden;
       background: white;
       height: 200px;
       width: 200px;
+      overflow-y: auto;
     }
     .legend-item {
       display: flex;
@@ -58,31 +86,82 @@
       align-self: center;
       padding-left: 10px;
     }
-    #legend-close{
+    #legend-close,
+    #list-close {
       position: absolute;
       top: 0px;
       right: 0px;
       width: 20px;
       height: 20px;
       text-align: center;
-      cursor:pointer;
-      font-size:16px;
+      cursor: pointer;
+      font-size: 16px;
     }
-    #legend-close:hover{
+    #legend-close:hover,
+    #list-close:hover {
       font-weight: bold;
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 10px;
+    }
+    #list-button {
+      position: absolute;
+      right: 10px;
+      padding: 5px;
+      background: white;
+      border-radius: 5px;
+      border: 1px solid grey;
+      z-index: 2;
+      box-shadow: #00000038 1px 1px 1px 1px;
+      cursor: pointer;
+    }
+    #list-button:hover {
+      background-color: lightgrey;
+    }
+
+    ol {
+      padding-inline-start: 25px;
+      list-style-position: inside;
+      background: white;
+      padding: 0;
+      margin: 0;
+      border-radius: 0.1rem;
+    }
+
+    li {
+      padding: 5px;
+    }
+
+    li:not(:last-child) {
+      border-bottom: 1px solid lightblue;
+    }
+
+    li:first-child {
+      /* margin-top: 1rem; */
+    }
+
+    li:last-child {
+      margin-bottom: 1rem;
+    }
+    .maplibregl-ctrl-bottom-right {
+      display:none;
     }
   </style>
   <body style="margin: 0px">
     <main>
-      <div id="map" style="height: 100vh; width: 100%">      
-        <div id="legend-button" title="Toggle legend">
+      <div id="map" style="height: 100vh; width: 100%">
+        <div id="legend-button" class="button" title="Toggle legend">
           <span class="fg-map-legend fg-2x"></span>
         </div>
-      </div>
-      <div id="legend">
-        <div id="legend-close">
-          x
+        <div id="list-button" class="button" title="Toggle list">
+          <i data-feather="list"></i>
         </div>
+      </div>
+
+      <div id="legend">
+        <div id="legend-close">x</div>
         <div class="legend-item">
           <div class="legend-item-shape">
             <svg display="block" height="41px" width="30px" viewBox="0 0 27 41">
@@ -268,7 +347,9 @@
               </g>
             </svg>
           </div>
-          <div class="legend-item-label">Con competencia en violencia de género</div>
+          <div class="legend-item-label">
+            Con competencia en violencia de género
+          </div>
         </div>
 
         <div class="legend-item">
@@ -552,14 +633,115 @@
           </div>
           <div class="legend-item-label">Mercantil</div>
         </div>
-      </div></div>
 
+        <div class="legend-item">
+          <div class="legend-item-shape">
+            <svg display="block" height="41px" width="30px" viewBox="0 0 27 41">
+              <g fill-rule="nonzero">
+                <g transform="translate(3.0, 29.0)" fill="#000000">
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="10.5"
+                    ry="5.25002273"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="10.5"
+                    ry="5.25002273"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="9.5"
+                    ry="4.77275007"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="8.5"
+                    ry="4.29549936"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="7.5"
+                    ry="3.81822308"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="6.5"
+                    ry="3.34094679"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="5.5"
+                    ry="2.86367051"
+                  ></ellipse>
+                  <ellipse
+                    opacity="0.04"
+                    cx="10.5"
+                    cy="5.80029008"
+                    rx="4.5"
+                    ry="2.38636864"
+                  ></ellipse>
+                </g>
+                <g fill="yellow">
+                  <path
+                    d="M27,13.5 C27,19.074644 20.250001,27.000002 14.75,34.500002 C14.016665,35.500004 12.983335,35.500004 12.25,34.500002 C6.7499993,27.000002 0,19.222562 0,13.5 C0,6.0441559 6.0441559,0 13.5,0 C20.955844,0 27,6.0441559 27,13.5 Z"
+                  ></path>
+                </g>
+                <g opacity="0.25" fill="#000000">
+                  <path
+                    d="M13.5,0 C6.0441559,0 0,6.0441559 0,13.5 C0,19.222562 6.7499993,27 12.25,34.5 C13,35.522727 14.016664,35.500004 14.75,34.5 C20.250001,27 27,19.074644 27,13.5 C27,6.0441559 20.955844,0 13.5,0 Z M13.5,1 C20.415404,1 26,6.584596 26,13.5 C26,15.898657 24.495584,19.181431 22.220703,22.738281 C19.945823,26.295132 16.705119,30.142167 13.943359,33.908203 C13.743445,34.180814 13.612715,34.322738 13.5,34.441406 C13.387285,34.322738 13.256555,34.180814 13.056641,33.908203 C10.284481,30.127985 7.4148684,26.314159 5.015625,22.773438 C2.6163816,19.232715 1,15.953538 1,13.5 C1,6.584596 6.584596,1 13.5,1 Z"
+                  ></path>
+                </g>
+                <g transform="translate(6.0, 7.0)" fill="#FFFFFF"></g>
+                <g transform="translate(8.0, 8.0)">
+                  <circle
+                    fill="#000000"
+                    opacity="0.25"
+                    cx="5.5"
+                    cy="5.5"
+                    r="5.4999962"
+                  ></circle>
+                  <circle
+                    fill="#FFFFFF"
+                    cx="5.5"
+                    cy="5.5"
+                    r="5.4999962"
+                  ></circle>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="legend-item-label">Seleccionado</div>
+        </div>
+      </div>
+
+      <div id="list">
+        <div id="list-close">x</div>
+        <span style="font-weight: bold;">Mi lista</span>
+        <div id="my-list"></div>
+      </div>
     </main>
 
     <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
     <script src="https://unpkg.com/@stadiamaps/maplibre-search-box/dist/maplibre-search-box.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
     <script>
+      feather.replace();
       const getColor = function (obj) {
         if (obj.name.includes("violencia")) return "red";
         if (obj.name.includes("Penal")) return "#58CF39";
@@ -959,7 +1141,7 @@
         },
         {
           name: "Juzgado de Primera Instancia número 9 de Sabadell, de familia, capacidad de las personas e internamientos",
-          coords: [41.552652012768284, 2.098708862932134],
+          coords: [41.155216310420734, 1.109746294836836],
         },
         {
           name: "Juzgado de Primera Instancia e Instrucción número 5 de Sant Boi de Llobregat",
@@ -1046,7 +1228,6 @@
           name: "Juzgado de Primera Instancia e Instrucción número 1 de Villajoyosa",
           coords: [38.507442656170745, -0.2283880371932957],
         },
-
         {
           name: "Juzgado de Primera Instancia e Instrucción número 3 de Villajoyosa",
           coords: [38.507442656170745, -0.2283880371932957],
@@ -1203,6 +1384,8 @@
         },
       ];
 
+      let userList = [];
+
       let container = document.getElementById("map");
       const map = new maplibregl.Map({
         container,
@@ -1227,46 +1410,115 @@
         "top-left"
       );
 
-      myData.forEach((obj) => {
+      myData.forEach((obj, i) => {
+        obj.id = i; //assign it an ID
+
         let marker = new maplibregl.Marker({
           color: getColor(obj),
-        })
-          .setLngLat([obj.coords[1], obj.coords[0]])
+        }).setLngLat([obj.coords[1], obj.coords[0]]);
+        marker._element.id = 'marker-' + obj.id;
+
+        marker
           .setPopup(
             new maplibregl.Popup({ closeButton: true }).setHTML(
-              `<span>${obj.name}</span>`
+              `<div>
+                <span>${obj.name}</span>
+                <div class='buttons-container'>
+                  <button class='addToListButton' onclick='onClickAddToList(${obj.id})'> <i data-feather="add"></i>+ add to list</button>
+                  <button class='removeFromListButton' onclick='onClickRemoveFromList(${obj.id})'> - remove from list</button>
+                </div>
+              </div>`
             )
           )
           .addTo(map);
       });
 
+      const onClickAddToList = (markerId) => {
+        if (!userList.includes(markerId)) {
+          userList.push(markerId);
+          let marker = document.getElementById('marker-'+markerId)
+          marker.childNodes[0].childNodes[0].childNodes[1].style.fill='yellow'
+        } else {
+          // is already in list
+        }
+        updateListDOM();
+      };
+      const onClickRemoveFromList = (markerId) => {
+        if (userList.includes(markerId)) {
+          let index = userList.indexOf(markerId);
+          delete userList[index];
+          let marker = document.getElementById('marker-'+markerId)
+          marker.childNodes[0].childNodes[0].childNodes[1].style.fill=getColor(myData[markerId])
+        } else {
+          // wasnt in list anyway
+        }
+        updateListDOM();
+      };
+
+      const updateListDOM = () => {
+        let container = document.getElementById("my-list");
+        // clear previous
+        container.innerHTML = "";
+        let newList = document.createElement("ol");
+        userList.forEach((id) => {
+          let item = document.createElement("li");
+          item.innerHTML = myData[id].name;
+          newList.appendChild(item);
+        });
+        container.appendChild(newList);
+      };
+
       //ontoggle legend
-      let btn = document.getElementById('legend-button')
-      let legendCloseBtn = document.getElementById('legend-close')
-      let legend = document.getElementById('legend')
-      let legendIsOpen = true
-      btn.addEventListener('click',function(e){
-        legendIsOpen = !legendIsOpen
-
+      let btn = document.getElementById("legend-button");
+      let legendCloseBtn = document.getElementById("legend-close");
+      let legend = document.getElementById("legend");
+      let legendIsOpen = false;
+      btn.addEventListener("click", function (e) {
+        legendIsOpen = !legendIsOpen;
         if (!legendIsOpen) {
           // close
-          legend.style.display = 'none'
+          legend.style.display = "none";
         } else {
           // open
-          legend.style.display = 'block'
+          legend.style.display = "block";
         }
-      })
-      legendCloseBtn.addEventListener('click',function(e){
-        legendIsOpen = !legendIsOpen
-
+      });
+      legendCloseBtn.addEventListener("click", function (e) {
+        legendIsOpen = !legendIsOpen;
         if (!legendIsOpen) {
           // close
-          legend.style.display = 'none'
+          legend.style.display = "none";
         } else {
           // open
-          legend.style.display = 'block'
+          legend.style.display = "block";
         }
-      })
+      });
+
+      //ontoggle list
+      let listBtn = document.getElementById("list-button");
+      let listCloseBtn = document.getElementById("list-close");
+      let list = document.getElementById("list");
+      let listIsOpen = false;
+      listBtn.addEventListener("click", function (e) {
+        listIsOpen = !listIsOpen;
+        if (!listIsOpen) {
+          // close
+          list.style.display = "none";
+        } else {
+          // open
+          list.style.display = "block";
+        }
+      });
+      listCloseBtn.addEventListener("click", function (e) {
+        listIsOpen = !listIsOpen;
+        if (!listIsOpen) {
+          // close
+          list.style.display = "none";
+        } else {
+          // open
+          list.style.display = "block";
+        }
+      });
     </script>
   </body>
 </html>
