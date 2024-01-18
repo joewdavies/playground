@@ -1455,8 +1455,8 @@
               `<div>
                 <span>${obj.name}</span>
                 <div class='buttons-container'>
-                  <button class='addToListButton popup-button' onclick='onClickAddToList(${obj.id})'> <i data-feather="add"></i>+ add to list</button>
-                  <button class='removeFromListButton popup-button' style='display:none' id='remove-button-${obj.id}'onclick='onClickRemoveFromList(${obj.id})'> - remove from list</button>
+                  <button class='addToListButton popup-button' style='display:block' id='add-button-${obj.id}' onclick='onClickAddToList(${obj.id})'> <i data-feather="add"></i>+ add to list</button>
+                  <button class='removeFromListButton popup-button' style='display:none' id='remove-button-${obj.id}' onclick='onClickRemoveFromList(${obj.id})'> - remove from list</button>
                 </div>
               </div>`
             )
@@ -1474,6 +1474,10 @@
             "remove-button-" + markerId
           );
           removeButton.style.display = "block";
+          let addButton = document.getElementById(
+            "add-button-" + markerId
+          );
+          addButton.style.display = "none";
         } else {
           // is already in list
         }
@@ -1491,6 +1495,10 @@
             "remove-button-" + markerId
           );
           removeButton.style.display = "none";
+          let addButton = document.getElementById(
+            "add-button-" + markerId
+          );
+          addButton.style.display = "block";
         } else {
           // wasnt in list anyway
         }
