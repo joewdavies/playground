@@ -20,7 +20,7 @@
     />
   </head>
   <style>
-    .button {
+    .map-button {
       height: 30px;
       width: 30px;
       display: flex;
@@ -29,9 +29,32 @@
       justify-content: center;
       bottom: 20px;
     }
+    .addToListButton {
+      background: #0d6efd;
+      color: white;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+    }
+    .addToListButton:hover {
+      background: #3685f9;
+    }
+    .removeFromListButton {
+      background: #ff4040;
+      color: white;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+    }
+    .removeFromListButton:hover {
+      background: #f98282;
+    }
+    .popup-button {
+      padding: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin:auto;
+    }
     #legend-button {
       position: absolute;
-
       left: 10px;
       padding: 5px;
       background: white;
@@ -41,11 +64,11 @@
       box-shadow: #00000038 1px 1px 1px 1px;
       cursor: pointer;
     }
-    #legend-button:hover {
+    #legend-button:focus {
       background-color: lightgrey;
     }
     #legend {
-      display:none;
+      display: none;
       z-index: 1;
       padding: 5px;
       border: 1px solid #767676;
@@ -62,7 +85,7 @@
       width: 200px;
     }
     #list {
-      display:none;
+      display: none;
       z-index: 1;
       padding: 5px;
       border: 1px solid #767676;
@@ -103,7 +126,7 @@
     }
     .buttons-container {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       padding-top: 10px;
     }
     #list-button {
@@ -117,7 +140,7 @@
       box-shadow: #00000038 1px 1px 1px 1px;
       cursor: pointer;
     }
-    #list-button:hover {
+    #list-button:focus {
       background-color: lightgrey;
     }
 
@@ -133,6 +156,10 @@
     li {
       padding: 5px;
     }
+    li:hover {
+      background-color: lightgrey;
+      cursor: pointer;
+    }
 
     li:not(:last-child) {
       border-bottom: 1px solid lightblue;
@@ -146,16 +173,19 @@
       margin-bottom: 1rem;
     }
     .maplibregl-ctrl-bottom-right {
-      display:none;
+      display: none;
     }
   </style>
   <body style="margin: 0px">
     <main>
-      <div id="map" style="height: 100dvh; width: 100%; min-height: -webkit-fill-available;">
-        <div id="legend-button" class="button" title="Toggle legend">
+      <div
+        id="map"
+        style="height: 100dvh; width: 100%; min-height: -webkit-fill-available"
+      >
+        <div id="legend-button" class="map-button" title="Toggle legend">
           <span class="fg-map-legend fg-2x"></span>
         </div>
-        <div id="list-button" class="button" title="Toggle list">
+        <div id="list-button" class="map-button" title="Toggle list">
           <i data-feather="list"></i>
         </div>
       </div>
@@ -725,13 +755,13 @@
               </g>
             </svg>
           </div>
-          <div class="legend-item-label">Seleccionado</div>
+          <div class="legend-item-label">Añadido a tu lista</div>
         </div>
       </div>
 
       <div id="list">
         <div id="list-close">x</div>
-        <span style="font-weight: bold;">Mi lista</span>
+        <span style="font-weight: bold">Mi lista</span>
         <div id="my-list"></div>
       </div>
     </main>
@@ -1416,7 +1446,8 @@
         let marker = new maplibregl.Marker({
           color: getColor(obj),
         }).setLngLat([obj.coords[1], obj.coords[0]]);
-        marker._element.id = 'marker-' + obj.id;
+        marker._element.id = "marker-" + obj.id;
+        marker._element.style.cursor = "pointer";
 
         marker
           .setPopup(
@@ -1424,8 +1455,8 @@
               `<div>
                 <span>${obj.name}</span>
                 <div class='buttons-container'>
-                  <button class='addToListButton' onclick='onClickAddToList(${obj.id})'> <i data-feather="add"></i>+ add to list</button>
-                  <button class='removeFromListButton' onclick='onClickRemoveFromList(${obj.id})'> - remove from list</button>
+                  <button class='addToListButton popup-button' onclick='onClickAddToList(${obj.id})'> <i data-feather="add"></i>+ add to list</button>
+                  <button class='removeFromListButton popup-button' style='display:none' id='remove-button-${obj.id}'onclick='onClickRemoveFromList(${obj.id})'> - remove from list</button>
                 </div>
               </div>`
             )
@@ -1436,19 +1467,30 @@
       const onClickAddToList = (markerId) => {
         if (!userList.includes(markerId)) {
           userList.push(markerId);
-          let marker = document.getElementById('marker-'+markerId)
-          marker.childNodes[0].childNodes[0].childNodes[1].style.fill='yellow'
+          let marker = document.getElementById("marker-" + markerId);
+          marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
+            "yellow";
+          let removeButton = document.getElementById(
+            "remove-button-" + markerId
+          );
+          removeButton.style.display = "block";
         } else {
           // is already in list
         }
         updateListDOM();
       };
+
       const onClickRemoveFromList = (markerId) => {
         if (userList.includes(markerId)) {
           let index = userList.indexOf(markerId);
           delete userList[index];
-          let marker = document.getElementById('marker-'+markerId)
-          marker.childNodes[0].childNodes[0].childNodes[1].style.fill=getColor(myData[markerId])
+          let marker = document.getElementById("marker-" + markerId);
+          marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
+            getColor(myData[markerId]);
+          let removeButton = document.getElementById(
+            "remove-button-" + markerId
+          );
+          removeButton.style.display = "none";
         } else {
           // wasnt in list anyway
         }
@@ -1464,6 +1506,14 @@
           let item = document.createElement("li");
           item.innerHTML = myData[id].name;
           newList.appendChild(item);
+          // fly to marker when list item clicked
+          item.addEventListener("click", () => {
+            let obj = myData[id];
+            map.flyTo({
+              center: [obj.coords[1], obj.coords[0]],
+              essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+            });
+          });
         });
         container.appendChild(newList);
       };
