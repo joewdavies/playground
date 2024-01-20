@@ -1559,17 +1559,19 @@
         container.innerHTML = "";
         let newList = document.createElement("ol");
         userList.forEach((id) => {
-          let item = document.createElement("li");
-          item.innerHTML = myData[id].name;
-          newList.appendChild(item);
-          // fly to marker when list item clicked
-          item.addEventListener("click", () => {
-            let obj = myData[id];
-            map.flyTo({
-              center: [obj.coords[1], obj.coords[0]],
-              essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+          if (myData[id]) {
+            let item = document.createElement("li");
+            item.innerHTML = myData[id].name;
+            newList.appendChild(item);
+            // fly to marker when list item clicked
+            item.addEventListener("click", () => {
+              let obj = myData[id];
+              map.flyTo({
+                center: [obj.coords[1], obj.coords[0]],
+                essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+              });
             });
-          });
+          }
         });
         container.appendChild(newList);
       };
