@@ -1534,6 +1534,7 @@
         if (userList.includes(markerId)) {
           let index = userList.indexOf(markerId);
           delete userList[index];
+          userList = userList.filter(n => n) // remove null value
           localStorage.setItem("userList", JSON.stringify(userList));
 
           let marker = document.getElementById("marker-" + markerId);
