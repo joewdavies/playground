@@ -1655,8 +1655,10 @@
             //update markers
             userList.forEach((markerId) => {
               let marker = document.getElementById("marker-" + markerId);
-              marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
-                getColor(myData[markerId]);
+              if (marker) {
+                marker.childNodes[0].childNodes[0].childNodes[1].style.fill =
+                  getColor(myData[markerId]);
+              }
             });
 
             // if popup currently open, update its btns
